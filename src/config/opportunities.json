@@ -1,0 +1,7 @@
+{
+  "data": [
+    { "key": "compound", "name": "Compound", "apy": 0.05 },
+    { "key": "aave", "name": "Aave", "apy": 0.03 },
+    { "key": "curve", "name": "Curve", "apy": 0.025 }
+  ]
+}
