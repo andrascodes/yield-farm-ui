@@ -1,5 +1,8 @@
+
+import useFetchOpportunities from "./hooks/useFetchOpportunities";
 function App() {
-  return <div>Hello</div>;
+  useFetchOpportunities();
+
 }
 
 export default App;

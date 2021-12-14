@@ -12,6 +12,7 @@ export default function addOpportunitiesHandler(
     },
     {}
   );
+
   return {
     ...state,
     opportunities: opportunitiesMap,

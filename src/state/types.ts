@@ -1,7 +1,7 @@
 // Change if we'd rather suport BigNumber
 type AmountType = number;
 
-interface OpportunityState {
+export interface OpportunityState {
   depositedAmount: AmountType;
   accruedInterestAmount: AmountType;
 }
