@@ -1,5 +1,9 @@
 import { Box, Card, CardContent, Grid, Stack, Typography } from "@mui/material";
 import { Opportunity, OpportunityState } from "../../state/types";
+import OpportunityCardActions from "./OpportunityCardActions";
+
+const format2DecimalPlaces = (v: number) =>
+  (Math.round(v * 100) / 100).toFixed(2);
 
 function CardRow({ name, value }: { name: string; value: string }) {
   return (
@@ -23,7 +27,7 @@ export default function OpportunityCard({
   opportunity: Opportunity;
   opportunityState?: OpportunityState;
 }) {
-  const { name, apy } = opportunity;
+  const { name, apy, key } = opportunity;
 
   const depositedAmount = opportunityState
     ? opportunityState.depositedAmount
@@ -43,14 +47,18 @@ export default function OpportunityCard({
             <CardRow name="Current APY:" value={`${apy * 100}%`} />
             <CardRow
               name="Amount Deposited:"
-              value={`${depositedAmount} USDC`}
+              value={`${format2DecimalPlaces(depositedAmount)} USDC`}
             />
             <CardRow
               name="Accrued Interest:"
-              value={`${accruedInterestAmount} USDC`}
+              value={`${format2DecimalPlaces(accruedInterestAmount)} USDC`}
             />
           </Stack>
         </CardContent>
+        <OpportunityCardActions
+          opportunityId={key}
+          totalAmountDeposited={depositedAmount + accruedInterestAmount}
+        />
       </Card>
     </Grid>
   );

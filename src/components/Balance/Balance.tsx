@@ -28,8 +28,6 @@ export default function Balance() {
     editInitialBalance(amount);
   };
 
-  console.log(usdcBalance);
-
   return (
     <Card>
       <CardContent>
@@ -37,7 +35,6 @@ export default function Balance() {
           USDC Balance
         </Typography>
         <TextField
-          id="filled-basic"
           label="Amount"
           variant="filled"
           value={usdcBalance}

@@ -11,14 +11,13 @@ export default function Opportunities() {
     return <CircularProgress />;
   }
 
-  console.log(opportunities);
-
   return (
     <Grid sx={{ flexGrow: 1 }} container spacing={2}>
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={3}>
           {Object.keys(opportunities).map((key) => (
             <OpportunityCard
+              key={key}
               opportunity={opportunities[key]}
               opportunityState={opportunityStates[key]}
             />
