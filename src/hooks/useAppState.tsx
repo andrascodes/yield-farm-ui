@@ -1,16 +1,17 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useEffect, useReducer } from "react";
 
 import { INITIAL_BALANCE } from "../config";
 import { Opportunity, StateType } from "../state/types";
 
 import appStateReducer from "../state/appStateReducer";
+import { useSnackbar } from "../hooks/useSnackbar";
 
 export const initialState: StateType = {
   usdcBalance: INITIAL_BALANCE,
   started: false,
-  day: 0,
   opportunities: {},
   opportunityStates: {},
+  error: undefined,
 };
 
 interface AppStateContextValue {
@@ -45,8 +46,20 @@ export default function AppStateProvider({
   children: JSX.Element;
 }) {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
+  const { setSnackbarContent, setSnackbarOpen } = useSnackbar();
 
-  console.log(state);
+  const { error } = state;
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarContent({ severity: "error", message: error?.message });
+      setSnackbarOpen(true);
+    } else {
+      setSnackbarContent(undefined);
+      setSnackbarOpen(false);
+    }
+  }, [error, setSnackbarContent, setSnackbarOpen]);
+
   const editInitialBalance = useCallback(
     (amount: number) => {
       dispatch({ type: "editInitialBalance", payload: { amount } });
@@ -71,17 +84,34 @@ export default function AppStateProvider({
   const progress = useCallback(
     (days: number) => {
       dispatch({ type: "progress", payload: { days } });
+      setSnackbarContent({
+        severity: "info",
+        message: `Progressed by ${days} days`,
+      });
+      setSnackbarOpen(true);
     },
-    [dispatch]
+    [dispatch, setSnackbarContent, setSnackbarOpen]
   );
 
   const reset = useCallback(() => {
     dispatch({ type: "reset" });
-  }, [dispatch]);
+    setSnackbarContent({
+      severity: "info",
+      message: "Yield farming has reset",
+    });
+    setSnackbarOpen(true);
+  }, [dispatch, setSnackbarContent, setSnackbarOpen]);
 
   const addOpportunities = useCallback(
     (opportunities: Opportunity[]) => {
       dispatch({ type: "addOpportunities", payload: { opportunities } });
+    },
+    [dispatch]
+  );
+
+  const setError = useCallback(
+    (error: Error) => {
+      dispatch({ type: "setError", payload: { error } });
     },
     [dispatch]
   );
@@ -97,6 +127,7 @@ export default function AppStateProvider({
     progress,
     reset,
     addOpportunities,
+    setError,
   };
 
   return (

@@ -5,6 +5,7 @@ import editInitialBalanceHandler from "./editInitialBalance";
 import progressActionHandler from "./progress";
 import withdrawActionHandler from "./withdraw";
 import resetActionHandler from "./reset";
+import setErrorActionHandler from "./setErrorActionHandler";
 
 export default function appStateReducer(
   state: StateType,
@@ -23,6 +24,8 @@ export default function appStateReducer(
       return progressActionHandler(state, action);
     case "reset":
       return resetActionHandler(state);
+    case "setError":
+      return setErrorActionHandler(state, action);
     default:
       return state;
   }

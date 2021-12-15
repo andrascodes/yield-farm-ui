@@ -7,14 +7,17 @@ import theme from "./theme";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import AppStateProvider from "./hooks/useAppState";
+import SnackbarProvider from "./hooks/useSnackbar";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppStateProvider>
-        <App />
-      </AppStateProvider>
+      <SnackbarProvider>
+        <AppStateProvider>
+          <App />
+        </AppStateProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

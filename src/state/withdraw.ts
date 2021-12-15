@@ -1,3 +1,4 @@
+import { setError } from "./setErrorActionHandler";
 import { StateType, STATE_ERRORS, WithdrawAction } from "./types";
 
 export default function withdrawActionHandler(
@@ -7,19 +8,19 @@ export default function withdrawActionHandler(
   const { amount, opportunityId } = action.payload;
   const { usdcBalance, opportunityStates, opportunities } = state;
 
-  if (opportunities[opportunityId]) {
-    throw new Error(STATE_ERRORS.OPPORTUNITY_NOT_FOUND);
+  if (!opportunities[opportunityId]) {
+    return setError(state, new Error(STATE_ERRORS.OPPORTUNITY_NOT_FOUND));
   }
 
   const currentOpportunityState = opportunityStates[opportunityId];
   if (!currentOpportunityState) {
-    throw new Error(STATE_ERRORS.NOT_DEPOSITED);
+    return setError(state, new Error(STATE_ERRORS.NOT_DEPOSITED));
   }
 
   const { depositedAmount, accruedInterestAmount } = currentOpportunityState;
 
   if (amount > depositedAmount + accruedInterestAmount) {
-    throw new Error(STATE_ERRORS.INSUFFICIENT_FUNDS);
+    return setError(state, new Error(STATE_ERRORS.INSUFFICIENT_FUNDS));
   }
 
   let newDepositedAmount = depositedAmount;

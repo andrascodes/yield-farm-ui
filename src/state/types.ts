@@ -16,9 +16,9 @@ export type OpportunitiesType = Record<string, Opportunity>;
 export interface StateType {
   usdcBalance: AmountType;
   started: boolean;
-  day: 0;
   opportunities: OpportunitiesType;
   opportunityStates: OpportunityStatesType;
+  error: Error | undefined;
 }
 
 interface ActionType<Type extends string, Payload extends Record<string, any>> {
@@ -46,6 +46,7 @@ export type AddOpportunitiesAction = ActionType<
 export type ResetAction = {
   type: "reset";
 };
+export type SetErrorAction = ActionType<"setError", { error: Error }>;
 
 export type Action =
   | EditInitialBalanceAction
@@ -53,7 +54,8 @@ export type Action =
   | WithdrawAction
   | ProgressAction
   | AddOpportunitiesAction
-  | ResetAction;
+  | ResetAction
+  | SetErrorAction;
 
 export enum STATE_ERRORS {
   OPPORTUNITY_NOT_FOUND = "Opportunity not found",
